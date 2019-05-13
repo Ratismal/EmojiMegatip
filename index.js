@@ -9,45 +9,61 @@ module.exports = class EmojiMegatip extends Plugin {
     document.addEventListener('mouseout', this.moBind);
     const r = (this.react = this.manager.get('react'));
     r.on('mutation', this.mBind);
+
+    this.classMap = {
+      layer: 'layer-v9HyYc',
+      tooltip: 'tooltip-2QfLtc',
+      tooltipTop: 'tooltipTop-XDDSxx',
+      tooltipBottom: 'tooltipBottom-3ARrEK',
+      emoji: 'emoji',
+      reaction: 'reaction',
+      reactionCount: 'reaction-count'
+    }
   }
 
   onMouseHover(e) {
-    if(e.target.classList && e.target.classList.contains("emoji")) this.lastEmoji = e.target;
-      else if (e.target.classList && e.target.classList.contains("reaction"))  this.lastEmoji = e.target.firstChild;
-      else if (e.target.classList && e.target.classList.contains("reaction-count")) this.lastEmoji = e.target.previousSibling;
+    if (e.target.classList && e.target.classList.contains(this.classMap.emoji)) this.lastEmoji = e.target;
+    else if (e.target.classList && e.target.classList.contains(this.classMap.reaction)) this.lastEmoji = e.target.firstChild;
+    else if (e.target.classList && e.target.classList.contains(this.classMap.reactionCount)) this.lastEmoji = e.target.previousSibling;
   }
 
   onMouseOut(e) {
-    if(
-      (e.fromElement.classList && e.fromElement.classList.contains("emoji") && !e.fromElement.parentNode.classList.contains('reaction'))
-      || (e.fromElement.classList && e.fromElement.classList.contains("reaction"))) this.lastEmoji = null;
+    if (
+      (e.fromElement.classList && e.fromElement.classList.contains(this.classMap.emoji) && !e.fromElement.parentNode.classList.contains(this.classMap.reaction))
+      || (e.fromElement.classList && e.fromElement.classList.contains(this.classMap.reaction))) this.lastEmoji = null;
   }
 
   mut(rec) {
-    if(rec.addedNodes && this.lastEmoji) rec.addedNodes.forEach(n => {
-      if(n.classList && n.classList.contains('tooltip-1OS-Ti')){
-        let rect = n.getBoundingClientRect();
-        let atBottom = rect.top < 200;
-        let origwidth = rect.width;
-        let origheight = rect.height;
-        let img = this.react.createElement(`<img src="${this.lastEmoji.src}" width="128" style="display: -webkit-box; margin-bottom: 5px; align-self: center">`).childNodes[0];
-        n.insertBefore(img, n.childNodes[0]);
+    if (rec.addedNodes && this.lastEmoji) rec.addedNodes.forEach(r => {
+      if (r.classList && r.classList.contains(this.classMap.layer)) {
+        let n = r.querySelector('.' + this.classMap.tooltip);
+        if (n && n.classList && n.classList.contains(this.classMap.tooltip)) {
+          let rect = n.getBoundingClientRect();
+          let atBottom = rect.top < 200;
+          let origwidth = rect.width;
+          let origheight = rect.height;
+          let img = this.react.createElement(`<img src="${this.lastEmoji.src}" width="128" style="display: -webkit-box; margin-bottom: 5px; align-self: center">`).childNodes[0];
+          n.insertBefore(img, n.childNodes[0]);
 
-        let nrect = n.getBoundingClientRect();
-        let widthdiff = nrect.width - origwidth;
-        let heightdiff = nrect.height - origheight;
-        n.style.left = (Number(n.style.left.replace("px", "")) - widthdiff/2) + "px";
-        if(atBottom) {
-          n.classList.remove('top-1pTh1F');
-          n.classList.add('bottom-19kp6S');
+          let nrect = n.getBoundingClientRect();
+          let widthdiff = nrect.width - origwidth;
+          let heightdiff = nrect.height - origheight;
+          n.style.left = (Number(n.style.left.replace("px", "")) - widthdiff / 2) + "px";
+          // if (atBottom) {
+          //   n.classList.remove(this.classMap.tooltipTop);
+          //   n.classList.add(this.classMap.tooltipBottom);
+          //   n.style.top = (Number(n.style.top.replace("px", "")) + heightdiff / 2) + "px";
+          // } else {
+          //   n.style.top = (Number(n.style.top.replace("px", "")) - heightdiff) + "px";
+          // }
+          n.style.textAlign = "center";
         }
-        n.style.textAlign = "center";
       }
     });
   }
 
   unload() {
-    document.removeEventListener('mouseover', this.mhBind);
+    document.removeEvent2Listener('mouseover', this.mhBind);
     document.removeEventListener('mouseout', this.moBind);
     this.react.removeListener('mutation', this.mBind);
   }

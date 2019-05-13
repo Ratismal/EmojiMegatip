@@ -1,17 +1,21 @@
 {
-  "name": "emojimegatip",
-  "version": "1.0.1",
+  "name": "di-emojimegatip",
+  "version": "1.0.2",
   "main": "index.js",
-  "author": "Snazzah",
+  "author": "Snazzah, stupid cat",
   "description": "Adds the biggest version of the emoji you are hovering over.",
-  "peerDependencies": { "elements": "*" },
-  "keywords": ["di-plugin"],
+  "peerDependencies": {
+    "elements": "*"
+  },
+  "keywords": [
+    "di-plugin"
+  ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SnazzahDI/EmojiMegatip.git"
+    "url": "git+https://github.com/ratismal/EmojiMegatip.git"
   },
   "bugs": {
-    "url": "https://github.com/SnazzahDI/EmojiMegatip/issues"
+    "url": "https://github.com/ratismal/EmojiMegatip/issues"
   },
   "license": "MIT"
 }
